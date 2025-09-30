@@ -5,11 +5,11 @@ import ru.practicum.shareit.item.model.Item;
 
 public class ItemMapper {
 
-    public static Item ItemDtoToItem(ItemDto itemDto, Long ownerId) {
+    public static Item itemDtoToItem(ItemDto itemDto, Long ownerId) {
         return new Item(itemDto.getId(), ownerId, itemDto.getName(), itemDto.getDescription(), itemDto.getAvailable());
     }
 
-    public static ItemDto ItemToItemDto(Item item) {
+    public static ItemDto itemToItemDto(Item item) {
         return new ItemDto(item.getId(), item.getName(), item.getDescription(), item.getAvailable());
     }
 }

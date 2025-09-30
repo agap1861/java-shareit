@@ -23,7 +23,7 @@ public class ItemStorageInMemory implements ItemStorage {
                 .orElse(0L);
         id++;
         itemDto.setId(id);
-        items.put(id, ItemMapper.ItemDtoToItem(itemDto, ownerId));
+        items.put(id, ItemMapper.itemDtoToItem(itemDto, ownerId));
         return itemDto;
     }
 
@@ -52,7 +52,7 @@ public class ItemStorageInMemory implements ItemStorage {
     public List<ItemDto> getItemByOwner(Long ownerId) {
         return items.values().stream()
                 .filter(item -> item.getOwnerId().equals(ownerId))
-                .map(ItemMapper::ItemToItemDto)
+                .map(ItemMapper::itemToItemDto)
                 .toList();
     }
 
@@ -64,7 +64,7 @@ public class ItemStorageInMemory implements ItemStorage {
                 .filter(item -> ((item.getName().toLowerCase().contains(lowerText)
                         || item.getDescription().toLowerCase().contains(lowerText))
                         && item.getAvailable() == true))
-                .map(ItemMapper::ItemToItemDto)
+                .map(ItemMapper::itemToItemDto)
                 .toList();
     }
 }

@@ -21,7 +21,7 @@ public class UserStorageInMemory implements UserStorage {
                 .max(Long::compareTo)
                 .orElse(0L);
         id++;
-        User user = UserMapper.toUser(userDto, id);
+        User user = UserMapper.userDtoToUser(userDto, id);
 
         users.put(id, user);
 
