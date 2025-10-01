@@ -19,7 +19,7 @@ public class ItemServiceImpl implements ItemService {
     private final UserStorage userStorage;
 
     @Override
-    public ItemDto postItem(ItemDto itemDto, Long ownerId) {
+    public ItemDto postItem(ItemDto itemDto, Long ownerId) throws NotFoundException, ValidationException {
         if (ownerId == null || !userStorage.isExistUserById(ownerId)) {
             throw new NotFoundException("user not found");
         }
@@ -32,7 +32,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto patchItem(ItemDto itemDto, Long ownerId, Long itemId) {
+    public ItemDto patchItem(ItemDto itemDto, Long ownerId, Long itemId) throws NotFoundException, ValidationException {
         if (ownerId == null || !userStorage.isExistUserById(ownerId)) {
             throw new NotFoundException("user not correct");
         }
@@ -46,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item getItem(Long itemId) {
+    public Item getItem(Long itemId) throws NotFoundException {
         return itemStorage.getItem(itemId).orElseThrow(() -> new NotFoundException("not found"));
     }
 

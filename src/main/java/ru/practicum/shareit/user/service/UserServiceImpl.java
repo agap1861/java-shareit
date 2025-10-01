@@ -16,20 +16,24 @@ public class UserServiceImpl implements UserService {
     private final UserStorage userStorage;
 
     @Override
-    public User postUser(UserDto userDto) {
+    public User postUser(UserDto userDto) throws DuplicateException, ValidationException {
+
         validateInputDataForPost(userDto);
+
         return userStorage.postUser(userDto);
     }
 
     @Override
-    public User patchUser(UserDto userDto, Long userId) {
+    public User patchUser(UserDto userDto, Long userId) throws DuplicateException, ValidationException {
+
         validateInputDataForPatch(userDto, userId);
+
         return userStorage.patchUser(userDto, userId);
 
     }
 
     @Override
-    public User getUserById(Long userId) {
+    public User getUserById(Long userId) throws NotFoundException {
         return userStorage.getUserById(userId).orElseThrow(() -> new NotFoundException("not found user"));
     }
 
@@ -39,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private void validateInputDataForPost(UserDto userDto) {
+    private void validateInputDataForPost(UserDto userDto) throws DuplicateException, ValidationException {
         if (!StringUtils.hasText(userDto.getName()) || !StringUtils.hasText(userDto.getEmail())) {
             throw new ValidationException("data is empty");
         }
@@ -52,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private void validateInputDataForPatch(UserDto userDto, Long userId) {
+    private void validateInputDataForPatch(UserDto userDto, Long userId) throws DuplicateException, ValidationException {
         if (!userStorage.isExistUserById(userId)) {
             throw new ValidationException("id not correct");
         }

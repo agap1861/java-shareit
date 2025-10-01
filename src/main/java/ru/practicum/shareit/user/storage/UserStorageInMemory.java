@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class UserStorageInMemory implements UserStorage {
-    HashMap<Long, User> users = new HashMap<>();
+    private HashMap<Long, User> users = new HashMap<>();
 
 
     @Override
