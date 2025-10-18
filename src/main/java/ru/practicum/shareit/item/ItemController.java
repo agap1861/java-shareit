@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.excaption.NotFoundException;
 import ru.practicum.shareit.excaption.ValidationException;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.CommentResponse;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemWithComments;
+
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -20,7 +24,7 @@ public class ItemController {
     private final ItemService service;
 
     @PostMapping
-    public ItemDto postItem(@RequestHeader("X-Sharer-User-Id") Long ownerId, @RequestBody ItemDto itemDto) throws ValidationException, NotFoundException {
+    public Item postItem(@RequestHeader("X-Sharer-User-Id") Long ownerId, @RequestBody ItemDto itemDto) throws ValidationException, NotFoundException {
         return service.postItem(itemDto, ownerId);
 
     }
@@ -32,8 +36,8 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public Item getItemById(@PathVariable Long itemId) throws NotFoundException {
-        return service.getItem(itemId);
+    public ItemWithComments getItemById(@PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") Long userId) throws NotFoundException {
+        return service.getItem(itemId, userId);
     }
 
     @GetMapping
@@ -44,6 +48,11 @@ public class ItemController {
     @GetMapping("/search")
     public List<ItemDto> getItemsBySearch(@RequestParam("text") String text) {
         return service.getItemBySearch(text);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentResponse postComment(@PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") Long userId, @RequestBody CommentDto dto) throws ValidationException, NotFoundException {
+        return service.postComment(dto, userId, itemId);
     }
 
 
