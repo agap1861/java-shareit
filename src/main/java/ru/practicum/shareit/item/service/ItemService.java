@@ -30,7 +30,7 @@ public interface ItemService {
 
     Item findItem(Long itemId) throws NotFoundException;
 
-    CommentResponse postComment(CommentDto dto, Long userId, Long ItemId) throws ValidationException, NotFoundException;
+    CommentResponse postComment(CommentDto dto, Long userId, Long itemId) throws ValidationException, NotFoundException;
 
 
 }
