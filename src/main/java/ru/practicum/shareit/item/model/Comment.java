@@ -49,14 +49,4 @@ public class Comment {
         return Objects.hashCode(id);
     }
 
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", item=" + item +
-                ", author=" + author +
-                ", created=" + created +
-                '}';
-    }
 }

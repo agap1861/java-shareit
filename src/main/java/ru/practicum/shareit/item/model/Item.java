@@ -52,14 +52,4 @@ public class Item {
         return Objects.hashCode(id);
     }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", owner=" + owner +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", available=" + available +
-                '}';
-    }
 }
