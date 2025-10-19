@@ -30,7 +30,6 @@ public class BookingServiceImpl implements BookingService {
     private final ItemService itemService;
 
     @Override
-    @Transactional
     public BookingResponse postBooking(BookingDto bookingDto, Long bookerId) throws NotFoundException, ValidationException {
         bookingDto.setBookerId(bookerId);
         bookingDto.setStatus(StatusBooking.WAITING);
@@ -87,7 +86,6 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @Transactional
     public BookingResponse getBookingByBookingIdAndUserId(Long bookingId, Long userId) throws NotFoundException, ValidationException {
         Booking booking = bookingStorage.findById(bookingId).orElseThrow(() -> new NotFoundException("not found"));
         Item item = itemService.findItem(booking.getItem().getId());

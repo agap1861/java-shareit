@@ -2,7 +2,9 @@ package ru.practicum.shareit.item.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.practicum.shareit.user.User;
 
 import java.time.Instant;
@@ -10,7 +12,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "comments")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Comment {
 
@@ -45,5 +48,16 @@ public class Comment {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", item=" + item +
+                ", author=" + author +
+                ", created=" + created +
+                '}';
     }
 }
