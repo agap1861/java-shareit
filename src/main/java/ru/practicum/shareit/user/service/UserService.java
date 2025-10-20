@@ -14,4 +14,6 @@ public interface UserService {
     User getUserById(Long userId) throws NotFoundException;
 
     void deleteUserById(Long userId);
+
+    boolean existById(Long id);
 }

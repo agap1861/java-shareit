@@ -6,24 +6,22 @@ import ru.practicum.shareit.booking.StatusBooking;
 
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-bookings.
- */
 @Data
 @NoArgsConstructor
-public class BookingDto {
-    private Long itemId;
+public class BookingResponse {
+    private Long id;
     private LocalDateTime start;
     private LocalDateTime end;
-    private Long bookerId;
     private StatusBooking status;
+    private BookerDto booker;
+    private ItemBookedDto item;
 
-
-    public BookingDto(Long itemId, LocalDateTime start, LocalDateTime end, Long bookerId, StatusBooking status) {
-        this.itemId = itemId;
+    public BookingResponse(Long id, LocalDateTime start, LocalDateTime end, StatusBooking status, BookerDto booker, ItemBookedDto item) {
+        this.id = id;
         this.start = start;
         this.end = end;
-        this.bookerId = bookerId;
         this.status = status;
+        this.booker = booker;
+        this.item = item;
     }
 }

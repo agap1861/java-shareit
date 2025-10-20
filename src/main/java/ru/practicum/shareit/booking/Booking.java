@@ -1,6 +1,12 @@
 package ru.practicum.shareit.booking;
 
-import lombok.Data;
+import jakarta.persistence.*;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.User;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -8,14 +14,35 @@ import java.util.Objects;
 /**
  * TODO Sprint add-bookings.
  */
-@Data
+@Entity
+@Table(name = "bookings")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Booking {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime start;
-    private LocalDateTime end;
-    private Long itemId;
-    private Long bookerId;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
+    private Item item;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booker_id")
+    private User booker;
+    @Enumerated(EnumType.STRING)
     private StatusBooking status;
+
+    public Booking(LocalDateTime startDate, LocalDateTime endDate, Item item, User booker, StatusBooking status) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.item = item;
+        this.booker = booker;
+        this.status = status;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -28,4 +55,5 @@ public class Booking {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }
