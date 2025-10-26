@@ -1,11 +1,20 @@
 package ru.practicum.shareit.user.storage;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.item.domian.Item;
+import ru.practicum.shareit.user.domain.User;
 
-@Repository
-public interface UserStorage extends JpaRepository<User, Long> {
+import java.util.List;
+import java.util.Optional;
+
+public interface UserStorage {
+
+    User save(User user);
+
+    Optional<User> findById(Long userId);
+
+    void deleteById(Long userId);
+
+    boolean existById(Long userId);
+
     boolean existsByEmail(String email);
-
 }

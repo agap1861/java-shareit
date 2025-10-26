@@ -5,16 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.booking.domain.Booking;
 import ru.practicum.shareit.booking.StatusBooking;
-import ru.practicum.shareit.booking.dto.BookingDto;
-import ru.practicum.shareit.booking.dto.BookingResponse;
-import ru.practicum.shareit.booking.mapper.BookingMapper;
+import ru.practicum.shareit.booking.dto.BookingRequestDto;
+import ru.practicum.shareit.booking.mapper.BookingDomainDtoMapper;
 import ru.practicum.shareit.booking.storage.BookingStorage;
 import ru.practicum.shareit.excaption.NotFoundException;
 import ru.practicum.shareit.excaption.ValidationException;
-import ru.practicum.shareit.item.mapper.ItemMapper;
-import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.domian.Item;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -28,70 +26,71 @@ public class BookingServiceImpl implements BookingService {
     private final BookingStorage bookingStorage;
     private final UserService userService;
     private final ItemService itemService;
+    private final BookingDomainDtoMapper bookingDomainDtoMapper;
 
     @Override
-    public BookingResponse postBooking(BookingDto bookingDto, Long bookerId) throws NotFoundException, ValidationException {
-        bookingDto.setBookerId(bookerId);
-        bookingDto.setStatus(StatusBooking.WAITING);
-        validateBooking(bookingDto, bookerId);
-        Item item = itemService.findItem(bookingDto.getItemId());
-        Booking booking = bookingStorage.save(BookingMapper.bookingDtoToBooking(bookingDto, item));
-        return BookingMapper.bookingDtoToBooking(booking);
+    public Booking postBooking(BookingRequestDto bookingRequestDto) throws NotFoundException, ValidationException {
+
+        validateBooking(bookingRequestDto);
+        Item item = itemService.findItemById(bookingRequestDto.getItemId()).get();
+        return bookingStorage.save(bookingDomainDtoMapper.dtoToDomain(bookingRequestDto, item));
+
     }
 
-    private void validateBooking(BookingDto bookingDto, Long bookerId) throws NotFoundException, ValidationException {
-        if (!itemService.existById(bookingDto.getItemId())) {
+    private void validateBooking(BookingRequestDto bookingRequestDto) throws NotFoundException, ValidationException {
+        if (!itemService.existById(bookingRequestDto.getItemId())) {
             throw new NotFoundException("not found");
         }
-        if (!userService.existById(bookerId)) {
+        if (!userService.existById(bookingRequestDto.getBookerId())) {
             throw new NotFoundException("not found");
         }
-        if (!itemService.isAvailable(bookingDto.getItemId())) {
+        if (!itemService.isAvailable(bookingRequestDto.getItemId())) {
             throw new ValidationException("item not available");
         }
-        if (bookingDto.getStart() == null || bookingDto.getEnd() == null) {
+        if (bookingRequestDto.getStart() == null || bookingRequestDto.getEnd() == null) {
             throw new ValidationException("end or start don't equals null");
         }
-        if (bookingDto.getEnd().isBefore(LocalDateTime.now())) {
+        if (bookingRequestDto.getEnd().isBefore(LocalDateTime.now())) {
             throw new ValidationException("time of end already passed");
         }
-        if (bookingDto.getStart().isBefore(LocalDateTime.now())) {
+        if (bookingRequestDto.getStart().isBefore(LocalDateTime.now())) {
             throw new ValidationException("time of start already passed");
         }
-        if (bookingDto.getStart().isEqual(bookingDto.getEnd())) {
+        if (bookingRequestDto.getStart().isEqual(bookingRequestDto.getEnd())) {
             throw new ValidationException("start equal to end");
         }
     }
 
     @Override
     @Transactional
-    public BookingResponse patchBooking(Long bookingId, Long ownerId, boolean approve) throws ValidationException, NotFoundException {
+    public Booking patchBooking(Long bookingId, Long ownerId, boolean approve) throws ValidationException, NotFoundException {
 
         Booking booking = bookingStorage.findById(bookingId).orElseThrow();
-        Item item = itemService.findItem(booking.getItem().getId());
-        if (!item.getOwner().getId().equals(ownerId)) {
+        Item item = itemService.findItemById(booking.getItem().getId()).orElseThrow(() -> new NotFoundException("not found"));
+        if (!item.getOwnerId().equals(ownerId)) {
             throw new ValidationException("wrong user");
         }
-
         if (approve) {
             booking.setStatus(StatusBooking.APPROVED);
             item.setAvailable(false);
         } else {
             booking.setStatus(StatusBooking.REJECTED);
         }
-        itemService.postItem(ItemMapper.itemToItemDto(item), ownerId);
-        bookingStorage.save(booking);
-        return BookingMapper.bookingDtoToBooking(booking);
+/*        itemService.postItem(ItemMapper.itemToItemDto(itemEntity), ownerId);
+        bookingStorage.save(bookingEntity);*/
+        itemService.postItem(item);
+        return booking;//?????? что тут унас
+        // return BookingMapper.bookingDtoToBooking(bookingEntity);
 
     }
 
     @Override
-    public BookingResponse getBookingByBookingIdAndUserId(Long bookingId, Long userId) throws NotFoundException, ValidationException {
+    public Booking getBookingByBookingIdAndUserId(Long bookingId, Long userId) throws NotFoundException, ValidationException {
         Booking booking = bookingStorage.findById(bookingId).orElseThrow(() -> new NotFoundException("not found"));
-        Item item = itemService.findItem(booking.getItem().getId());
-        if (booking.getBooker().getId().equals(userId) || item.getOwner().getId().equals(userId)) {
-            BookingResponse dto = BookingMapper.bookingDtoToBooking(booking);
-            return dto;
+        Item item = itemService.findItemById(booking.getItem().getId()).orElseThrow(() -> new NotFoundException("not found"));
+        if (booking.getBookerId().equals(userId) || item.getOwnerId().equals(userId)) {
+            // BookingResponse dto = BookingMapper.bookingDtoToBooking(bookingEntity);
+            return booking;
         } else {
             throw new ValidationException("wrong user");
         }
@@ -99,10 +98,18 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingResponse> getBookingsByUserId(Long bookerId) {
-        List<Booking> bookings = bookingStorage.findAllByBooker_Id(bookerId);
-        return bookings.stream()
-                .map(BookingMapper::bookingDtoToBooking)
-                .toList();
+    public List<Booking> getBookingsByUserId(Long bookerId) {
+        return bookingStorage.findAllByBooker_Id(bookerId);
+
+    }
+
+    @Override
+    public Booking findNextBooking(Long itemId) {
+        return bookingStorage.findNextBooking(itemId);
+    }
+
+    @Override
+    public Booking findLastBooking(Long itemId) {
+        return bookingStorage.findLastBooking(itemId);
     }
 }

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.entity.UserEntity;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Comment {
+public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,14 +23,14 @@ public class Comment {
     private String text;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
-    private Item item;
+    private ItemEntity item;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
-    private User author;
+    private UserEntity author;
     @Column(name = "created")
     private Instant created;
 
-    public Comment(String text, Item item, User author) {
+    public CommentEntity(String text, ItemEntity item, UserEntity author) {
         this.text = text;
         this.item = item;
         this.author = author;
@@ -40,8 +40,8 @@ public class Comment {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Comment comment = (Comment) o;
-        return Objects.equals(id, comment.id);
+        CommentEntity commentEntity = (CommentEntity) o;
+        return Objects.equals(id, commentEntity.id);
     }
 
     @Override

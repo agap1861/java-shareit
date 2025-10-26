@@ -2,35 +2,33 @@ package ru.practicum.shareit.item.service;
 
 import ru.practicum.shareit.excaption.NotFoundException;
 import ru.practicum.shareit.excaption.ValidationException;
-import ru.practicum.shareit.item.dto.CommentDto;
-import ru.practicum.shareit.item.dto.CommentResponse;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemWithComments;
-
-import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.domian.Comment;
+import ru.practicum.shareit.item.domian.Item;
+import ru.practicum.shareit.item.dto.item.ItemWithComments;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemService {
 
-    Item postItem(ItemDto itemDto, Long ownerId) throws NotFoundException, ValidationException;
+    Item postItem(Item item) throws NotFoundException, ValidationException;
 
-    ItemDto patchItem(ItemDto itemDto, Long ownerId, Long itemId) throws NotFoundException, ValidationException;
+    Item patchItem(Item item) throws NotFoundException, ValidationException;
 
-    ItemWithComments getItem(Long itemId, Long userId) throws NotFoundException;
+    ItemWithComments getItem(Long itemId,Long userId) throws NotFoundException;
 
-    List<ItemDto> getItemByOwner(Long ownerId);
+    List<Item> getItemByOwner(Long ownerId);
 
-    List<ItemDto> getItemBySearch(String text);
+    List<Item> getItemBySearch(String text);
 
     boolean existById(Long id);
 
     boolean isAvailable(Long id);
 
 
-    Item findItem(Long itemId) throws NotFoundException;
+    Optional<Item> findItemById(Long itemId);
 
-    CommentResponse postComment(CommentDto dto, Long userId, Long itemId) throws ValidationException, NotFoundException;
+    Comment postComment(Comment comment) throws ValidationException, NotFoundException;
 
 
 }

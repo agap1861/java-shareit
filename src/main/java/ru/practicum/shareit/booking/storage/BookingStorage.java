@@ -1,29 +1,22 @@
 package ru.practicum.shareit.booking.storage;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.booking.Booking;
-
+import ru.practicum.shareit.booking.domain.Booking;
+import ru.practicum.shareit.booking.entity.BookingEntity;
 
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface BookingStorage extends JpaRepository<Booking, Long> {
-    List<Booking> findAllByBooker_Id(Long bookerId);
+public interface BookingStorage {
 
-    Booking findOneByBooker_IdAndItem_Id(Long bookerId, Long itemId);
+    Booking save(Booking booking);
 
-    @Query("SELECT b FROM Booking b " +
-            "WHERE b.item.id = ?1 " +
-            "AND b.startDate < CURRENT_TIMESTAMP " +
-            "ORDER BY b.startDate DESC ")
+    Optional<Booking> findById(Long bookingId);
+
     Booking findLastBooking(Long itemId);
 
-    @Query("SELECT b FROM Booking b " +
-            "WHERE b.item.id = ?1 " +
-            "AND b.startDate > CURRENT_TIMESTAMP " +
-            "ORDER BY b.startDate ASC ")
     Booking findNextBooking(Long itemId);
 
+    List<Booking> findAllByBooker_Id(Long bookerId);
+
+    Booking findOneByBooker_IdAndItemEntity_Id(Long bookerId, Long itemId);
 }

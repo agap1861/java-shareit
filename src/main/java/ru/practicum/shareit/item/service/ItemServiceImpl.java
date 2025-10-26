@@ -3,84 +3,80 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.booking.domain.Booking;
 import ru.practicum.shareit.booking.storage.BookingStorage;
 import ru.practicum.shareit.excaption.NotFoundException;
 import ru.practicum.shareit.excaption.ValidationException;
-import ru.practicum.shareit.item.dto.CommentDto;
-import ru.practicum.shareit.item.dto.CommentResponse;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemWithComments;
-import ru.practicum.shareit.item.mapper.CommentMapper;
+import ru.practicum.shareit.item.domian.Comment;
+import ru.practicum.shareit.item.domian.Item;
+import ru.practicum.shareit.item.dto.item.ItemWithComments;
 import ru.practicum.shareit.item.mapper.ItemMapper;
-import ru.practicum.shareit.item.model.Comment;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.storage.CommentStorage;
-import ru.practicum.shareit.item.storage.ItemStorage;
-import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.storage.UserStorage;
+import ru.practicum.shareit.item.storage.comment.CommentStorage;
+import ru.practicum.shareit.item.storage.item.ItemStorage;
+import ru.practicum.shareit.user.domain.User;
+import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    private final ItemStorage itemStorage;
-    private final UserStorage userStorage;
+    private final ItemStorage ItemStorage;
+    private final UserService userService;
     private final BookingStorage bookingStorage;
     private final CommentStorage commentStorage;
 
     @Override
-    public Item postItem(ItemDto itemDto, Long ownerId) throws NotFoundException, ValidationException {
-        if (ownerId == null || !userStorage.existsById(ownerId)) {
+    public Item postItem(Item item) throws NotFoundException, ValidationException {
+        if (item.getOwnerId() == null || !userService.existById(item.getOwnerId())) {
             throw new NotFoundException("user not found");
         }
-        if (!StringUtils.hasText(itemDto.getName())
-                || !StringUtils.hasText(itemDto.getDescription())
-                || itemDto.getAvailable() == null) {
+        if (!StringUtils.hasText(item.getName())
+                || !StringUtils.hasText(item.getDescription())
+                || item.getAvailable() == null) {
             throw new ValidationException("data is empty");
         }
-        return itemStorage.save(ItemMapper.itemDtoToItem(itemDto, ownerId));
+        return ItemStorage.save(item);
     }
 
     @Override
-    public ItemDto patchItem(ItemDto itemDto, Long ownerId, Long itemId) throws NotFoundException, ValidationException {
-        if (ownerId == null || !userStorage.existsById(ownerId)) {
+    public Item patchItem(Item item) throws NotFoundException, ValidationException {
+        if (item.getOwnerId() == null || !userService.existById(item.getOwnerId())) {
             throw new NotFoundException("user not correct");
         }
-        Item item = itemStorage.findById(itemId).orElseThrow(() -> new NotFoundException("not found"));
-        if (!item.getOwner().getId().equals(ownerId)) {
+        Item oldItem = ItemStorage.findById(item.getId()).orElseThrow(() -> new NotFoundException("not found"));
+        if (!oldItem.getOwnerId().equals(item.getOwnerId())) {
             throw new ValidationException("owner id not correct");
         }
-        if (itemDto.getName() != null) {
-            item.setName(itemDto.getName());
+        if (item.getName() != null) {
+            oldItem.setName(item.getName());
         }
-        if (itemDto.getDescription() != null) {
-            item.setDescription(itemDto.getDescription());
+        if (item.getDescription() != null) {
+            oldItem.setDescription(item.getDescription());
         }
-        if (itemDto.getAvailable() != null) {
-            item.setAvailable(itemDto.getAvailable());
+        if (item.getAvailable() != null) {
+            oldItem.setAvailable(item.getAvailable());
         }
-        itemStorage.save(item);
-        return ItemMapper.itemToItemDto(item);
+        return ItemStorage.save(oldItem);
     }
 
     @Override
     public ItemWithComments getItem(Long itemId, Long userId) throws NotFoundException {
-        Item item = itemStorage.findById(itemId).orElseThrow(() -> new NotFoundException("not found"));
+        Item item = ItemStorage.findById(itemId).orElseThrow(() -> new NotFoundException("not found"));
         Booking last = bookingStorage.findLastBooking(itemId);
         Booking next = bookingStorage.findNextBooking(itemId);
-        List<String> comments = commentStorage.findAllByItem_Id(itemId).stream()
+        List<String> comments = commentStorage.findAllByItemById(itemId).stream()
                 .map(Comment::getText)
                 .toList();
 
         if (comments.isEmpty()) {
             return new ItemWithComments(item.getId(), item.getName(), item.getDescription(), item.getAvailable());
         }
-        if (next == null && item.getOwner().getId().equals(userId)) {
+        if (next == null && item.getOwnerId().equals(userId)) {
             return new ItemWithComments(item.getId(), item.getName(), item.getDescription(),
-                    item.getAvailable(), last.getEndDate(), comments);
+                    item.getAvailable(), last.getEnd(), comments);
         } else if (next == null) {
             return new ItemWithComments(item.getId(), item.getName(), item.getDescription(), item.getAvailable(),
                     comments);
@@ -91,54 +87,49 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getItemByOwner(Long ownerId) {
-        List<Item> items = itemStorage.findAllByOwner_Id(ownerId);
-        return items.stream()
-                .map(ItemMapper::itemToItemDto)
-                .toList();
+    public List<Item> getItemByOwner(Long ownerId) {
+        return ItemStorage.findAllByOwner_Id(ownerId);
     }
 
     @Override
-    public List<ItemDto> getItemBySearch(String text) {
+    public List<Item> getItemBySearch(String text) {
 
         if (!StringUtils.hasText(text)) {
             return List.of();
         } else {
-            List<Item> items = itemStorage.getItemBySearch(text);
-            return items.stream()
-                    .map(ItemMapper::itemToItemDto)
-                    .toList();
+            return ItemStorage.getItemBySearch(text);
         }
     }
 
     @Override
     public boolean existById(Long id) {
-        return itemStorage.existsById(id);
+        return ItemStorage.existById(id);
     }
 
     @Override
     public boolean isAvailable(Long id) {
-        Item item = itemStorage.findById(id).orElseThrow();
+        Item item = ItemStorage.findById(id).orElseThrow();
         return item.getAvailable();
     }
 
 
     @Override
-    public Item findItem(Long itemId) throws NotFoundException {
-        return itemStorage.findById(itemId).orElseThrow(() -> new NotFoundException("not found"));
+    public Optional<Item> findItemById(Long itemId) {
+        return ItemStorage.findById(itemId);
     }
 
     @Override
-    public CommentResponse postComment(CommentDto dto, Long userId, Long itemId) throws ValidationException, NotFoundException {
-        Booking booking = bookingStorage.findOneByBooker_IdAndItem_Id(userId, itemId);
-        if (booking != null && booking.getEndDate().isBefore(LocalDateTime.now())) {
-            User author = userStorage.findById(userId).orElseThrow(() -> new NotFoundException("not found"));
-            Comment comment = commentStorage.save(CommentMapper.commentDtoToComment(dto, author, itemId));
-            return CommentMapper.commentToCommentResponse(comment);
+    public Comment postComment(Comment comment) throws ValidationException, NotFoundException {
+        Booking booking = bookingStorage.findOneByBooker_IdAndItemEntity_Id(comment.getAuthor().getId(), comment.getItem().getId());
+        if (booking != null && booking.getEnd().isBefore(LocalDateTime.now())) {
+            User author = userService.getUserById(comment.getAuthor().getId());
+            comment.setAuthor(author);
+            return  commentStorage.save(comment);
 
         } else {
             throw new ValidationException("user didn't booked this item");
         }
+
     }
 
 }

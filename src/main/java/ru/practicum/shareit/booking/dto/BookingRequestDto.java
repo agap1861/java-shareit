@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @NoArgsConstructor
-public class BookingDto {
+public class BookingRequestDto {
     private Long itemId;
     private LocalDateTime start;
     private LocalDateTime end;
@@ -19,7 +19,7 @@ public class BookingDto {
     private StatusBooking status;
 
 
-    public BookingDto(Long itemId, LocalDateTime start, LocalDateTime end, Long bookerId, StatusBooking status) {
+    public BookingRequestDto(Long itemId, LocalDateTime start, LocalDateTime end, Long bookerId, StatusBooking status) {
         this.itemId = itemId;
         this.start = start;
         this.end = end;

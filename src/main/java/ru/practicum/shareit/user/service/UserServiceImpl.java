@@ -7,9 +7,7 @@ import org.springframework.util.StringUtils;
 import ru.practicum.shareit.excaption.DuplicateException;
 import ru.practicum.shareit.excaption.NotFoundException;
 import ru.practicum.shareit.excaption.ValidationException;
-import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.mapper.UserMapper;
+import ru.practicum.shareit.user.domain.User;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 
@@ -20,16 +18,16 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User postUser(UserDto userDto) throws DuplicateException, ValidationException {
+    public User postUser(User user) throws DuplicateException, ValidationException {
 
-        validateInputDataForPost(userDto);
-        return userStorage.save(UserMapper.userDtoToUser(userDto));
+        validateInputDataForPost(user);
+        return userStorage.save(user);
     }
 
     @Override
-    public User patchUser(UserDto userDto, Long userId) throws DuplicateException, ValidationException {
-        validateInputDataForPatch(userDto, userId);
-        return userStorage.save(UserMapper.userDtoToUser(userDto, userId));
+    public User patchUser(User user) throws DuplicateException, ValidationException {
+        validateInputDataForPatch(user);
+        return userStorage.save(user);
     }
 
     @Override
@@ -44,32 +42,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existById(Long id) {
-        return userStorage.existsById(id);
+        return userStorage.existById(id);
     }
 
-    private void validateInputDataForPost(UserDto userDto) throws DuplicateException, ValidationException {
-        if (!StringUtils.hasText(userDto.getName()) || !StringUtils.hasText(userDto.getEmail())) {
+    private void validateInputDataForPost(User user) throws DuplicateException, ValidationException {
+        if (!StringUtils.hasText(user.getName()) || !StringUtils.hasText(user.getEmail())) {
             throw new ValidationException("data is empty");
         }
-        if (userStorage.existsByEmail(userDto.getEmail())) {
+        if (userStorage.existsByEmail(user.getEmail())) {
 
             throw new DuplicateException("email already exist");
         }
-        if (!userDto.getEmail().contains("@")) {
+        if (!user.getEmail().contains("@")) {
             throw new ValidationException("email not correct");
         }
 
     }
 
-    private void validateInputDataForPatch(UserDto userDto, Long userId) throws DuplicateException, ValidationException {
-        if (!userStorage.existsById(userId)) {
+    private void validateInputDataForPatch(User user) throws DuplicateException, ValidationException {
+        if (!userStorage.existById(user.getId())) {
             throw new ValidationException("id not correct");
         }
 
-        if (StringUtils.hasText(userDto.getEmail()) && !userDto.getEmail().contains("@")) {
+        if (StringUtils.hasText(user.getEmail()) && !user.getEmail().contains("@")) {
             throw new ValidationException("email not correct");
         }
-        if (StringUtils.hasText(userDto.getEmail()) && userStorage.existsByEmail(userDto.getEmail())) {
+        if (StringUtils.hasText(user.getEmail()) && userStorage.existsByEmail(user.getEmail())) {
             throw new DuplicateException("email already exist");
         }
     }

@@ -1,12 +1,13 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.entity;
 
 import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.booking.StatusBooking;
+import ru.practicum.shareit.item.model.ItemEntity;
+import ru.practicum.shareit.user.entity.UserEntity;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -19,26 +20,26 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Booking {
+public class BookingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDateTime start;
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDateTime end;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
-    private Item item;
+    private ItemEntity item;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booker_id")
-    private User booker;
+    private UserEntity booker;
     @Enumerated(EnumType.STRING)
     private StatusBooking status;
 
-    public Booking(LocalDateTime startDate, LocalDateTime endDate, Item item, User booker, StatusBooking status) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public BookingEntity(LocalDateTime start, LocalDateTime end, ItemEntity item, UserEntity booker, StatusBooking status) {
+        this.start = start;
+        this.end = end;
         this.item = item;
         this.booker = booker;
         this.status = status;
@@ -47,8 +48,8 @@ public class Booking {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Booking booking = (Booking) o;
-        return Objects.equals(id, booking.id);
+        BookingEntity bookingEntity = (BookingEntity) o;
+        return Objects.equals(id, bookingEntity.id);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.dto;
+package ru.practicum.shareit.item.dto.item;
 
 
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemDto {
+public class ItemResponseDto {
     private Long id;
     private String name;
     private String description;
@@ -24,8 +24,8 @@ public class ItemDto {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        ItemDto itemDto = (ItemDto) o;
-        return Objects.equals(id, itemDto.id);
+        ItemResponseDto itemResponseDto = (ItemResponseDto) o;
+        return Objects.equals(id, itemResponseDto.id);
     }
 
     @Override

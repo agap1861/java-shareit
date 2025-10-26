@@ -1,7 +1,8 @@
-package ru.practicum.shareit.user;
+package ru.practicum.shareit.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Table(name = "users")
 @NoArgsConstructor
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,20 +24,22 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    public User(String name, String email) {
+
+
+    public UserEntity(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
-    public User(Long id) {
+    public UserEntity(Long id) {
         this.id = id;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
+        UserEntity userEntity = (UserEntity) o;
+        return Objects.equals(id, userEntity.id);
     }
 
     @Override
