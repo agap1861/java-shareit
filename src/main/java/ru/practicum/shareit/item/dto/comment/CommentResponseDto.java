@@ -13,10 +13,4 @@ public class CommentResponseDto {
     private String authorName;
     private Instant created;
 
-    public CommentResponseDto(Long id, String text, String authorName, Instant created) {
-        this.id = id;
-        this.text = text;
-        this.authorName = authorName;
-        this.created = created;
-    }
 }

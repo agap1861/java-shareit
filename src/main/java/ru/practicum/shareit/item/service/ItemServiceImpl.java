@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.practicum.shareit.booking.domain.Booking;
@@ -13,6 +15,7 @@ import ru.practicum.shareit.item.dto.item.ItemWithComments;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.storage.comment.CommentStorage;
 import ru.practicum.shareit.item.storage.item.ItemStorage;
+import ru.practicum.shareit.request.service.RequestService;
 import ru.practicum.shareit.user.domain.User;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -20,15 +23,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemStorage ItemStorage;
     private final UserService userService;
+    private final RequestService requestService;
     private final BookingStorage bookingStorage;
     private final CommentStorage commentStorage;
 
     @Override
+    @Transactional
     public Item postItem(Item item) throws NotFoundException, ValidationException {
         if (item.getOwnerId() == null || !userService.existById(item.getOwnerId())) {
             throw new NotFoundException("user not found");
@@ -38,7 +44,13 @@ public class ItemServiceImpl implements ItemService {
                 || item.getAvailable() == null) {
             throw new ValidationException("data is empty");
         }
-        return ItemStorage.save(item);
+
+        Item saveItem = ItemStorage.save(item);
+        if (item.getRequestId() != null) {
+            item.setId(saveItem.getId());
+            requestService.postResponse(item);
+        }
+        return saveItem;
     }
 
     @Override
@@ -124,7 +136,7 @@ public class ItemServiceImpl implements ItemService {
         if (booking != null && booking.getEnd().isBefore(LocalDateTime.now())) {
             User author = userService.getUserById(comment.getAuthor().getId());
             comment.setAuthor(author);
-            return  commentStorage.save(comment);
+            return commentStorage.save(comment);
 
         } else {
             throw new ValidationException("user didn't booked this item");

@@ -37,7 +37,7 @@ public class ItemController {
     public ItemResponseDto postItem(@RequestHeader("X-Sharer-User-Id") Long ownerId, @RequestBody ItemRequestDto itemRequestDto) throws ValidationException, NotFoundException {
         itemRequestDto.setOwnerId(ownerId);
         Item item = service.postItem(itemDomainRequestMapper.domainToDto(itemRequestDto));
-        return itemResponseDto.dtoToDomain(item);
+        return  itemResponseDto.dtoToDomain(item);
 
     }
 

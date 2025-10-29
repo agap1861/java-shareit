@@ -2,7 +2,7 @@ package ru.practicum.shareit.item.domian;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.shareit.user.domain.User;
+
 
 @Getter
 @Setter
@@ -12,4 +12,5 @@ public class Item {
     private String name;
     private String description;
     private Boolean available;
+    private Long requestId;
 }
