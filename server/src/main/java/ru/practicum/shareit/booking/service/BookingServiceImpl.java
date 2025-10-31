@@ -10,13 +10,12 @@ import ru.practicum.shareit.booking.StatusBooking;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.mapper.BookingDomainDtoMapper;
 import ru.practicum.shareit.booking.storage.BookingStorage;
-import ru.practicum.shareit.excaption.NotFoundException;
-import ru.practicum.shareit.excaption.ValidationException;
+import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.domian.Item;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.service.UserService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j

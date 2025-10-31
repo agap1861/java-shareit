@@ -2,12 +2,10 @@ package ru.practicum.shareit.request.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.excaption.NotFoundException;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.domian.Item;
 import ru.practicum.shareit.request.domain.Request;
 import ru.practicum.shareit.request.domain.Response;
-import ru.practicum.shareit.request.entity.RequestEntity;
-import ru.practicum.shareit.request.mapper.response.ResponseDomainEntityMapper;
 import ru.practicum.shareit.request.mapper.response.ResponseDomainItemMapper;
 import ru.practicum.shareit.request.storage.request.RequestStorage;
 import ru.practicum.shareit.request.storage.response.ResponseStorage;

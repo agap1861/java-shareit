@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.domian;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.shareit.user.domain.User;
 
@@ -8,6 +9,7 @@ import java.time.Instant;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Comment {
     private Long id;
     private String text;

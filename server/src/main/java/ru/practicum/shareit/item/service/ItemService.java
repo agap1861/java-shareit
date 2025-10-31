@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.service;
 
-import ru.practicum.shareit.excaption.NotFoundException;
-import ru.practicum.shareit.excaption.ValidationException;
+import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.domian.Comment;
 import ru.practicum.shareit.item.domian.Item;
 import ru.practicum.shareit.item.dto.item.ItemWithComments;

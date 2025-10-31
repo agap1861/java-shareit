@@ -1,9 +1,8 @@
 package ru.practicum.shareit.request.service;
 
-import ru.practicum.shareit.excaption.NotFoundException;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.domian.Item;
 import ru.practicum.shareit.request.domain.Request;
-import ru.practicum.shareit.request.domain.Response;
 
 import java.util.List;
 

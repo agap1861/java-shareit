@@ -3,8 +3,8 @@ package ru.practicum.shareit.booking.service;
 
 import ru.practicum.shareit.booking.domain.Booking;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
-import ru.practicum.shareit.excaption.NotFoundException;
-import ru.practicum.shareit.excaption.ValidationException;
+import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exception.ValidationException;
 
 import java.util.List;
 

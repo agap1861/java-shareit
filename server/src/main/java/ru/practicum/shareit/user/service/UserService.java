@@ -1,8 +1,8 @@
 package ru.practicum.shareit.user.service;
 
-import ru.practicum.shareit.excaption.DuplicateException;
-import ru.practicum.shareit.excaption.NotFoundException;
-import ru.practicum.shareit.excaption.ValidationException;
+import ru.practicum.shareit.exception.DuplicateException;
+import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.domain.User;
 
 public interface UserService {
