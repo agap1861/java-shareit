@@ -60,7 +60,7 @@ class ItemServiceImplIntegrationTest {
     }
 
     @Test
-    public void ItemShouldSave() throws ValidationException, NotFoundException {
+    public void itemShouldSave() throws ValidationException, NotFoundException {
         Item newItem = new Item();
         newItem.setName("newNameItem");
         newItem.setDescription("descr1");
@@ -79,7 +79,7 @@ class ItemServiceImplIntegrationTest {
     }
 
     @Test
-    public void ShouldUpdateItemCorrect() throws ValidationException, NotFoundException {
+    public void shouldUpdateItemCorrect() throws ValidationException, NotFoundException {
         Item newItem = new Item();
         newItem.setId(item.getId());
         newItem.setName("newNameItem");
@@ -100,7 +100,7 @@ class ItemServiceImplIntegrationTest {
     }
 
     @Test
-    public void ShouldNotUpdateWhenOwnerWrong() throws ValidationException, DuplicateException {
+    public void shouldNotUpdateWhenOwnerWrong() throws ValidationException, DuplicateException {
         User newUSer = new User();
         newUSer.setName("name1");
         newUSer.setEmail("email@a.c");

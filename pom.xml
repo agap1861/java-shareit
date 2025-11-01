@@ -146,6 +146,9 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>coverage</id>
+        </profile>
     </profiles>
 
 </project>
