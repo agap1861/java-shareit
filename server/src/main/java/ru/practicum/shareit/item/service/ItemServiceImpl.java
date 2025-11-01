@@ -27,7 +27,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    private final ItemStorage ItemStorage;
+    private final ItemStorage itemStorage;
     private final UserService userService;
     private final RequestService requestService;
     private final BookingStorage bookingStorage;
@@ -39,7 +39,7 @@ public class ItemServiceImpl implements ItemService {
         if (!userService.existById(item.getOwnerId())) {
             throw new NotFoundException("user not found");
         }
-        Item saveItem = ItemStorage.save(item);
+        Item saveItem = itemStorage.save(item);
         if (item.getRequestId() != null) {
             item.setId(saveItem.getId());
             requestService.postResponse(item);
@@ -52,7 +52,7 @@ public class ItemServiceImpl implements ItemService {
         if (!userService.existById(item.getOwnerId())) {
             throw new NotFoundException("user not correct");
         }
-        Item oldItem = ItemStorage.findById(item.getId()).orElseThrow(() -> new NotFoundException("not found"));
+        Item oldItem = itemStorage.findById(item.getId()).orElseThrow(() -> new NotFoundException("not found"));
         if (!oldItem.getOwnerId().equals(item.getOwnerId())) {
             throw new ValidationException("owner id not correct");
         }
@@ -65,12 +65,12 @@ public class ItemServiceImpl implements ItemService {
         if (item.getAvailable() != null) {
             oldItem.setAvailable(item.getAvailable());
         }
-        return ItemStorage.save(oldItem);
+        return itemStorage.save(oldItem);
     }
 
     @Override
     public ItemWithComments getItem(Long itemId, Long userId) throws NotFoundException {
-        Item item = ItemStorage.findById(itemId).orElseThrow(() -> new NotFoundException("not found"));
+        Item item = itemStorage.findById(itemId).orElseThrow(() -> new NotFoundException("not found"));
         Booking last = bookingStorage.findLastBooking(itemId);
         Booking next = bookingStorage.findNextBooking(itemId);
         List<String> comments = commentStorage.findAllByItemById(itemId).stream()
@@ -94,7 +94,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getItemByOwner(Long ownerId) {
-        return ItemStorage.findAllByOwner_Id(ownerId);
+        return itemStorage.findAllByOwner_Id(ownerId);
     }
 
     @Override
@@ -103,25 +103,25 @@ public class ItemServiceImpl implements ItemService {
         if (!StringUtils.hasText(text)) {
             return List.of();
         } else {
-            return ItemStorage.getItemBySearch(text);
+            return itemStorage.getItemBySearch(text);
         }
     }
 
     @Override
     public boolean existById(Long id) {
-        return ItemStorage.existById(id);
+        return itemStorage.existById(id);
     }
 
     @Override
     public boolean isAvailable(Long id) {
-        Item item = ItemStorage.findById(id).orElseThrow();
+        Item item = itemStorage.findById(id).orElseThrow();
         return item.getAvailable();
     }
 
 
     @Override
     public Optional<Item> findItemById(Long itemId) {
-        return ItemStorage.findById(itemId);
+        return itemStorage.findById(itemId);
     }
 
     @Override

@@ -23,8 +23,8 @@ public class UserStorageImpl implements UserStorage {
 
     @Override
     public Optional<User> findById(Long userId) {
-        return userJpaStorage.findById(userId).
-                map(userDomainEntityMapper::entityToDomain);
+        return userJpaStorage.findById(userId)
+                .map(userDomainEntityMapper::entityToDomain);
 
     }
 
