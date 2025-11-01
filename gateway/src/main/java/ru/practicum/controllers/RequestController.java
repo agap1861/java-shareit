@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RequestController {
     private final ValidateRequest validateRequest;
-    private final static String SERVER = "http://localhost:9090/requests";
+    private static final String SERVER = "http://localhost:9090/requests";
     private final RestTemplate restTemplate;
 
     @PostMapping

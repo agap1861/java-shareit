@@ -18,7 +18,7 @@ import ru.practicum.shareit.user.service.UserService;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final UserDomainDtoMapper userDomainDtoMapper;
+    private final UserDomainDtoMapper  userDomainDtoMapper;
 
 
     @PostMapping

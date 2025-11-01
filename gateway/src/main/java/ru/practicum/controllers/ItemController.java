@@ -24,7 +24,7 @@ import java.util.List;
 public class ItemController {
     private final ValidateItem validateItem;
     private final RestTemplate restTemplate;
-    private final static String SERVER = "http://localhost:9090/items";
+    private static final String SERVER = "http://localhost:9090/items";
 
     @PostMapping
     public OutItem postItem(@RequestHeader("X-Sharer-User-Id") Long ownerId, @RequestBody InItem inItem) throws ValidationException {

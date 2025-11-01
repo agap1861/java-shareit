@@ -19,7 +19,7 @@ import ru.practicum.validate.ValidateUser;
 public class UserController {
     private final ValidateUser validateUser;
     private final RestTemplate restTemplate;
-    private final static String SERVER = "http://localhost:9090/users";
+    private static final String SERVER = "http://localhost:9090/users";
 
 
     @PostMapping

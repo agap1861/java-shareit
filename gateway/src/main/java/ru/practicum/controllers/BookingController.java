@@ -23,7 +23,7 @@ import java.util.List;
 public class BookingController {
     private final ValidateBooking validateBooking;
     private final RestTemplate restTemplate;
-    private final static String SERVER = "http://localhost:9090/bookings";
+    private static final String SERVER = "http://localhost:9090/bookings";
 
     @PostMapping
     public OutBooking postBooking(@RequestHeader("X-Sharer-User-Id") Long bookerId, @RequestBody InBooking inBooking) throws ValidationException {
