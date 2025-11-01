@@ -9,7 +9,7 @@ import ru.practicum.shareit.exception.ValidationException;
 import java.util.List;
 
 public interface BookingService {
-    Booking postBooking(BookingRequestDto bookingRequestDto) throws NotFoundException, ValidationException;
+    Booking postBooking(Booking booking) throws NotFoundException, ValidationException;
 
     Booking patchBooking(Long bookingId, Long ownerId, boolean approve) throws ValidationException, NotFoundException;
 

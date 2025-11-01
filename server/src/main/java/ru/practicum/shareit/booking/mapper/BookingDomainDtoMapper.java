@@ -10,9 +10,10 @@ import ru.practicum.shareit.item.domian.Item;
 @Mapper(componentModel = "spring")
 public interface BookingDomainDtoMapper {
 
-    @Mapping(target = "item", source = "item")
+    @Mapping(target = "item.id", source = "itemId")
+   // @Mapping(target = "bookerId",source = "dto.bookerId")
     @Mapping(target = "bookerId",source = "dto.bookerId")
-    Booking dtoToDomain(BookingRequestDto dto, Item item);
+    Booking dtoToDomain(BookingRequestDto dto);
 
     @Mapping(target = "booker.id",source = "bookerId")
     @Mapping(target = "item.id",source = "item.id")

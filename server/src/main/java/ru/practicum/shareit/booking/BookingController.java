@@ -27,7 +27,7 @@ public class BookingController {
     public BookingResponse postBooking(@RequestHeader("X-Sharer-User-Id") Long bookerId, @RequestBody BookingRequestDto bookingRequestDto) throws ValidationException, NotFoundException {
         bookingRequestDto.setBookerId(bookerId);
         bookingRequestDto.setStatus(StatusBooking.WAITING);
-        Booking booking = bookingService.postBooking(bookingRequestDto);
+        Booking booking = bookingService.postBooking(bookingDomainDtoMapper.dtoToDomain(bookingRequestDto));
         return bookingDomainDtoMapper.domainToDto(booking);
     }
 

@@ -25,25 +25,25 @@ public class BookingServiceImpl implements BookingService {
     private final BookingStorage bookingStorage;
     private final UserService userService;
     private final ItemService itemService;
-    private final BookingDomainDtoMapper bookingDomainDtoMapper;
 
     @Override
-    public Booking postBooking(BookingRequestDto bookingRequestDto) throws NotFoundException, ValidationException {
+    public Booking postBooking(Booking booking) throws NotFoundException, ValidationException {
 
-        validateBooking(bookingRequestDto);
-        Item item = itemService.findItemById(bookingRequestDto.getItemId()).get();
-        return bookingStorage.save(bookingDomainDtoMapper.dtoToDomain(bookingRequestDto, item));
+        validateBooking(booking);
+        Item item = itemService.findItemById(booking.getItem().getId()).get();
+        booking.setItem(item);
+        return bookingStorage.save(booking);
 
     }
 
-    private void validateBooking(BookingRequestDto bookingRequestDto) throws NotFoundException, ValidationException {
-        if (!itemService.existById(bookingRequestDto.getItemId())) {
+    private void validateBooking(Booking booking) throws NotFoundException, ValidationException {
+        if (!itemService.existById(booking.getItem().getId())) {
             throw new NotFoundException("not found");
         }
-        if (!userService.existById(bookingRequestDto.getBookerId())) {
+        if (!userService.existById(booking.getBookerId())) {
             throw new NotFoundException("not found");
         }
-        if (!itemService.isAvailable(bookingRequestDto.getItemId())) {
+        if (!itemService.isAvailable(booking.getItem().getId())) {
             throw new ValidationException("item not available");
         }
     }
