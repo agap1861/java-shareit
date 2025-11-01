@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import ru.practicum.exeption.ValidationException;
 import ru.practicum.inputData.InBooking;
-import ru.practicum.inputData.InItem;
+
 import ru.practicum.outputData.OutBooking;
 import ru.practicum.validate.ValidateBooking;
 

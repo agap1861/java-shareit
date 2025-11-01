@@ -10,7 +10,7 @@ import ru.practicum.shareit.item.model.ItemEntity;
 import ru.practicum.shareit.user.entity.UserEntity;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
+
 
 /**
  * TODO Sprint add-bookings.
@@ -45,16 +45,5 @@ public class BookingEntity {
         this.status = status;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        BookingEntity bookingEntity = (BookingEntity) o;
-        return Objects.equals(id, bookingEntity.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 
 }

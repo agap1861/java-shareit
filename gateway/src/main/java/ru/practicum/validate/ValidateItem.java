@@ -29,8 +29,9 @@ public class ValidateItem {
             throw new ValidationException("text is empty");
         }
     }
+
     public void validateInputDataForComment(Long itemId, Long userId, InComment comment) throws ValidationException {
-        if (itemId == null || userId == null){
+        if (itemId == null || userId == null) {
             throw new ValidationException("id not correct");
         }
 

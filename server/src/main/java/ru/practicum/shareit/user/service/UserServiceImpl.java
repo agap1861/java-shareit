@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         return userStorage.existById(id);
     }
 
-    private void validateInputDataForPost(User user) throws DuplicateException{
+    private void validateInputDataForPost(User user) throws DuplicateException {
         if (userStorage.existsByEmail(user.getEmail())) {
 
             throw new DuplicateException("email already exist");

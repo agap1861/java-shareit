@@ -8,10 +8,10 @@ import ru.practicum.shareit.item.model.ItemEntity;
 
 @Mapper(componentModel = "spring")
 public interface ItemDomainEntityMapper {
-    @Mapping(target = "owner.id",source = "item.ownerId")
+    @Mapping(target = "owner.id", source = "item.ownerId")
     ItemEntity domainToEntity(Item item);
 
-    @Mapping(target = "ownerId",source = "itemEntity.owner.id")
+    @Mapping(target = "ownerId", source = "itemEntity.owner.id")
     Item entityToDomain(ItemEntity itemEntity);
 
 }

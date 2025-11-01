@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.domain.Booking;
 import ru.practicum.shareit.booking.StatusBooking;
-import ru.practicum.shareit.booking.dto.BookingRequestDto;
-import ru.practicum.shareit.booking.mapper.BookingDomainDtoMapper;
+
+
 import ru.practicum.shareit.booking.storage.BookingStorage;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;

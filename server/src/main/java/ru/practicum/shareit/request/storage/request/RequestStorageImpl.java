@@ -30,7 +30,7 @@ public class RequestStorageImpl implements RequestStorage {
 
     @Override
     public Optional<Request> getRequestById(Long requestId) {
-        return  requestJpaStorage.findById(requestId).map(requestDomainEntityMapper::entityToDomain);
+        return requestJpaStorage.findById(requestId).map(requestDomainEntityMapper::entityToDomain);
     }
 
     @Override

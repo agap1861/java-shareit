@@ -47,7 +47,7 @@ public class BookingStorageImpl implements BookingStorage {
 
     @Override
     public Booking findOneByBooker_IdAndItemEntity_Id(Long bookerId, Long itemId) {
-        BookingEntity bookingEntity = bookingJpaStorage.findOneByBooker_IdAndItem_Id(bookerId,itemId);
+        BookingEntity bookingEntity = bookingJpaStorage.findOneByBooker_IdAndItem_Id(bookerId, itemId);
         return bookingDomainEntityMapper.entityToDomain(bookingEntity);
     }
 }

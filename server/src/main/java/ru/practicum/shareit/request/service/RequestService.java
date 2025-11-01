@@ -8,15 +8,13 @@ import java.util.List;
 
 public interface RequestService {
 
-    Request postRequest(Request request);
+    Request postRequest(Request request) throws NotFoundException;
 
     void postResponse(Item item) throws NotFoundException;
 
     List<Request> getRequestsByUserId(Long userId);
 
     Request getRequestById(Long requestId) throws NotFoundException;
-
-
 
 
 }

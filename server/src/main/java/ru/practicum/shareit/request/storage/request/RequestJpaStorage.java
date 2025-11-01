@@ -5,6 +5,6 @@ import ru.practicum.shareit.request.entity.RequestEntity;
 
 import java.util.List;
 
-public interface RequestJpaStorage extends JpaRepository<RequestEntity,Long> {
+public interface RequestJpaStorage extends JpaRepository<RequestEntity, Long> {
     List<RequestEntity> getAllByRequesterId(Long requesterId);
 }

@@ -4,7 +4,7 @@ package ru.practicum.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import ru.practicum.exeption.ValidationException;
@@ -36,6 +36,7 @@ public class ErrorHandler {
     public Map<String, String> handleDuplicate(final HttpClientErrorException.Conflict e) {
         return Map.of("error", e.getMessage());
     }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleThrowable(final Throwable e) {

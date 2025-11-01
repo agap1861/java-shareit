@@ -58,11 +58,12 @@ public class RequestController {
         );
         return response.getBody();
     }
+
     @GetMapping("/{requestId}")
     public RequestWithResponse getRequestById(@PathVariable Long requestId) throws ValidationException {
         validateRequest.validateId(requestId);
         ResponseEntity<RequestWithResponse> response = restTemplate.exchange(
-                SERVER + "/"+requestId,
+                SERVER + "/" + requestId,
                 HttpMethod.GET,
                 null,
                 RequestWithResponse.class

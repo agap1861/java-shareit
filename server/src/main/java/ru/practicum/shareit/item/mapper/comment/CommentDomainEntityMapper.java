@@ -10,8 +10,8 @@ public interface CommentDomainEntityMapper {
 
     Comment entityToDomain(CommentEntity commentEntity);
 
-    @Mapping(target = "item",source = "item")
-    @Mapping(target = "author",source = "author")
+    @Mapping(target = "item", source = "item")
+    @Mapping(target = "author", source = "author")
     CommentEntity domainToEntity(Comment comment);
 
 }

@@ -1,6 +1,6 @@
 package ru.practicum.shareit.user.service;
 
-import jakarta.persistence.EntityManager;
+
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UserServiceImplIntegrationTest {
     private final UserService userService;
     private final UserStorage userStorage;
-    private  User user = new User();
+    private User user = new User();
 
 
     @BeforeEach
@@ -80,15 +80,16 @@ class UserServiceImplIntegrationTest {
 
         assertThrows(DuplicateException.class, () -> userService.postUser(user));
     }
+
     @Test
-    public void shouldThrowExceptionWhenUserDoseNotExist(){
+    public void shouldThrowExceptionWhenUserDoseNotExist() {
         User newUser = new User();
 
         newUser.setId(999L);
         newUser.setName("nameNew");
         newUser.setEmail("df@vf");
 
-        assertThrows(ValidationException.class,()-> userService.patchUser(newUser));
+        assertThrows(ValidationException.class, () -> userService.patchUser(newUser));
 
     }
 
@@ -103,20 +104,20 @@ class UserServiceImplIntegrationTest {
 
         User testuser = userService.getUserById(newUser.getId());
 
-        assertThat(newUser.getId(),equalTo(testuser.getId()));
-        assertThat(newUser.getName(),equalTo(testuser.getName()));
-        assertThat(newUser.getEmail(),equalTo(testuser.getEmail()));
+        assertThat(newUser.getId(), equalTo(testuser.getId()));
+        assertThat(newUser.getName(), equalTo(testuser.getName()));
+        assertThat(newUser.getEmail(), equalTo(testuser.getEmail()));
     }
 
     @Test
-    public void shouldReturnTrueWhenUserExist(){
-        assertThat(userService.existById(user.getId()),equalTo(true));
+    public void shouldReturnTrueWhenUserExist() {
+        assertThat(userService.existById(user.getId()), equalTo(true));
     }
 
     @Test
-    public void shouldDeleteUser()  {
+    public void shouldDeleteUser() {
         userService.deleteUserById(user.getId());
-        assertThat(userStorage.findById(user.getId()),equalTo(Optional.empty()));
+        assertThat(userStorage.findById(user.getId()), equalTo(Optional.empty()));
 
     }
 

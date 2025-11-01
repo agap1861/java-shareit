@@ -1,7 +1,7 @@
 package ru.practicum.shareit.booking.storage;
 
 import ru.practicum.shareit.booking.domain.Booking;
-import ru.practicum.shareit.booking.entity.BookingEntity;
+
 
 import java.util.List;
 import java.util.Optional;

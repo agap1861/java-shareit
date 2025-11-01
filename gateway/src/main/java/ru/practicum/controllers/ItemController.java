@@ -2,7 +2,7 @@ package ru.practicum.controllers;
 
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import ru.practicum.outputData.OutComment;
 import ru.practicum.outputData.OutItem;
 import ru.practicum.validate.ValidateItem;
 
-import java.lang.reflect.ParameterizedType;
+
 import java.util.List;
 
 @RestController

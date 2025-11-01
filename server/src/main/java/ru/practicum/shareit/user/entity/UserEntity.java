@@ -2,7 +2,7 @@ package ru.practicum.shareit.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.util.Objects;
 
@@ -23,7 +23,6 @@ public class UserEntity {
     private String name;
     @Column(name = "email")
     private String email;
-
 
 
     public UserEntity(String name, String email) {

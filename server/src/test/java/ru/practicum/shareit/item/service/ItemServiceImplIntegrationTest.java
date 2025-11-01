@@ -9,7 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.StatusBooking;
 import ru.practicum.shareit.booking.domain.Booking;
-import ru.practicum.shareit.booking.service.BookingService;
+
 import ru.practicum.shareit.booking.storage.BookingStorage;
 import ru.practicum.shareit.exception.DuplicateException;
 import ru.practicum.shareit.exception.NotFoundException;

@@ -37,7 +37,7 @@ public class ItemController {
     public ItemResponseDto postItem(@RequestHeader("X-Sharer-User-Id") Long ownerId, @RequestBody ItemRequestDto itemRequestDto) throws ValidationException, NotFoundException {
         itemRequestDto.setOwnerId(ownerId);
         Item item = service.postItem(itemDomainRequestMapper.domainToDto(itemRequestDto));
-        return  itemResponseDto.dtoToDomain(item);
+        return itemResponseDto.dtoToDomain(item);
 
     }
 
@@ -71,7 +71,7 @@ public class ItemController {
     public CommentResponseDto postComment(@PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") Long userId, @RequestBody CommentRequestDto dto) throws ValidationException, NotFoundException {
         dto.setItemId(itemId);
         dto.setUserId(userId);
-        Comment comment =  service.postComment(commentDomainRequestDtoMapper.dtoToDomain(dto));
+        Comment comment = service.postComment(commentDomainRequestDtoMapper.dtoToDomain(dto));
         return commentDomainResponseMapper.domainToDto(comment);
     }
 

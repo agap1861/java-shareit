@@ -15,7 +15,7 @@ public interface ItemService {
 
     Item patchItem(Item item) throws NotFoundException, ValidationException;
 
-    ItemWithComments getItem(Long itemId,Long userId) throws NotFoundException;
+    ItemWithComments getItem(Long itemId, Long userId) throws NotFoundException;
 
     List<Item> getItemByOwner(Long ownerId);
 

@@ -8,7 +8,7 @@ import ru.practicum.shareit.request.dto.ResponseDto;
 @Mapper(componentModel = "spring")
 public interface ResponseDomainToDtoMapper {
 
-    @Mapping(target = "name",source = "itemName")
-    @Mapping(target = "id",source = "itemId")
+    @Mapping(target = "name", source = "itemName")
+    @Mapping(target = "id", source = "itemId")
     ResponseDto domainToDto(Response response);
 }

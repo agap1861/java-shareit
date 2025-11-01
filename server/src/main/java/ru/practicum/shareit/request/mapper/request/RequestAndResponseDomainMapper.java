@@ -6,10 +6,10 @@ import ru.practicum.shareit.request.domain.Request;
 import ru.practicum.shareit.request.dto.RequestWithResponseDto;
 import ru.practicum.shareit.request.mapper.response.ResponseDomainToDtoMapper;
 
-@Mapper(componentModel = "spring",uses = ResponseDomainToDtoMapper.class)
+@Mapper(componentModel = "spring", uses = ResponseDomainToDtoMapper.class)
 public interface RequestAndResponseDomainMapper {
 
-    @Mapping(target = "items",source = "responses")
+    @Mapping(target = "items", source = "responses")
     RequestWithResponseDto domainToDto(Request request);
 
 

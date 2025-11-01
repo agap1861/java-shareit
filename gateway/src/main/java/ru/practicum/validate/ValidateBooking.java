@@ -5,6 +5,7 @@ import ru.practicum.exeption.ValidationException;
 import ru.practicum.inputData.InBooking;
 
 import java.time.LocalDateTime;
+
 @Service
 public class ValidateBooking {
     public void validateId(Long id) throws ValidationException {

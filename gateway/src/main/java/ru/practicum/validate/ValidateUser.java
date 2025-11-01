@@ -28,8 +28,9 @@ public class ValidateUser {
         }
 
     }
+
     public void validateId(Long userId) throws ValidationException {
-        if (userId == null){
+        if (userId == null) {
             throw new ValidationException("id not correct");
         }
     }

@@ -8,8 +8,8 @@ import ru.practicum.shareit.item.dto.comment.CommentRequestDto;
 @Mapper(componentModel = "spring")
 public interface CommentDomainRequestDtoMapper {
 
-    @Mapping(target = "author.id",source = "userId")
-    @Mapping(target = "item.id",source = "dto.itemId")
+    @Mapping(target = "author.id", source = "userId")
+    @Mapping(target = "item.id", source = "dto.itemId")
     Comment dtoToDomain(CommentRequestDto dto);
 
     CommentRequestDto domainToDto(Comment comment);

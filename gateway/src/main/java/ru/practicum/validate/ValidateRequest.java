@@ -14,6 +14,7 @@ public class ValidateRequest {
         }
 
     }
+
     public void validateId(Long id) throws ValidationException {
         if (id == null)
             throw new ValidationException("id not correct");

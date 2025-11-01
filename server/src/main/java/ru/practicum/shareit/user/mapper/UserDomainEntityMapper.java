@@ -8,5 +8,6 @@ import ru.practicum.shareit.user.entity.UserEntity;
 @Mapper(componentModel = "spring")
 public interface UserDomainEntityMapper {
     UserEntity domainToEntity(User user);
+
     User entityToDomain(UserEntity user);
 }

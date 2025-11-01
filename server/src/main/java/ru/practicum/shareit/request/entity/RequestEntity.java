@@ -3,7 +3,7 @@ package ru.practicum.shareit.request.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.shareit.request.domain.Response;
+
 import ru.practicum.shareit.user.entity.UserEntity;
 
 import java.time.Instant;

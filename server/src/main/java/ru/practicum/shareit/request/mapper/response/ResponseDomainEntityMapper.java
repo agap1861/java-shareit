@@ -8,15 +8,15 @@ import ru.practicum.shareit.request.entity.ResponseEntity;
 @Mapper(componentModel = "spring")
 public interface ResponseDomainEntityMapper {
 
-    @Mapping(target = "requestId",source = "request.id")
-    @Mapping(target = "itemId",source = "item.id")
-    @Mapping(target = "itemName",source = "item.name")
-    @Mapping(target = "ownerId",source = "owner.id")
+    @Mapping(target = "requestId", source = "request.id")
+    @Mapping(target = "itemId", source = "item.id")
+    @Mapping(target = "itemName", source = "item.name")
+    @Mapping(target = "ownerId", source = "owner.id")
     Response entityToDomain(ResponseEntity response);
 
-    @Mapping(target = "request.id",source = "requestId")
-    @Mapping(target = "item.id",source = "itemId")
-    @Mapping(target = "item.name",source = "itemName")
-    @Mapping(target = "owner.id",source = "ownerId")
+    @Mapping(target = "request.id", source = "requestId")
+    @Mapping(target = "item.id", source = "itemId")
+    @Mapping(target = "item.name", source = "itemName")
+    @Mapping(target = "owner.id", source = "ownerId")
     ResponseEntity domainToEntity(Response response);
 }

@@ -8,9 +8,9 @@ import ru.practicum.shareit.request.domain.Response;
 @Mapper(componentModel = "spring")
 public interface ResponseDomainItemMapper {
 
-    @Mapping(target = "itemId",source = "id")
-    @Mapping(target = "id",ignore = true)
-    @Mapping(target ="itemName",source = "name")
-    @Mapping(target = "requestId",source = "requestId")
+    @Mapping(target = "itemId", source = "id")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "itemName", source = "name")
+    @Mapping(target = "requestId", source = "requestId")
     Response itemToResponse(Item item);
 }

@@ -6,13 +6,13 @@ import ru.practicum.shareit.booking.domain.Booking;
 import ru.practicum.shareit.booking.entity.BookingEntity;
 import ru.practicum.shareit.item.mapper.item.ItemDomainEntityMapper;
 
-@Mapper(componentModel = "spring",uses = ItemDomainEntityMapper.class)
+@Mapper(componentModel = "spring", uses = ItemDomainEntityMapper.class)
 public interface BookingDomainEntityMapper {
     @Mapping(target = "item", source = "booking.item")
-    @Mapping(target = "booker.id",source = "bookerId")
+    @Mapping(target = "booker.id", source = "bookerId")
     BookingEntity domainToEntity(Booking booking);
 
-    @Mapping(target = "item",source = "bookingEntity.item")
-    @Mapping(target = "bookerId",source = "bookingEntity.booker.id")
+    @Mapping(target = "item", source = "bookingEntity.item")
+    @Mapping(target = "bookerId", source = "bookingEntity.booker.id")
     Booking entityToDomain(BookingEntity bookingEntity);
 }

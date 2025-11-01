@@ -26,7 +26,7 @@ public class RequestController {
 
 
     @PostMapping
-    public RequestDto postRequest(@RequestBody RequestCreateDto requestDto, @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public RequestDto postRequest(@RequestBody RequestCreateDto requestDto, @RequestHeader("X-Sharer-User-Id") Long userId) throws NotFoundException {
         requestDto.setRequesterId(userId);
         Request request = requestService.postRequest(requestDomainDtoMapper.dtoToDomain(requestDto));
         return requestDomainDtoMapper.domainToDto(request);
