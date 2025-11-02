@@ -5,11 +5,14 @@ import org.mapstruct.Mapping;
 import ru.practicum.shareit.item.domian.Comment;
 import ru.practicum.shareit.item.dto.comment.CommentRequestDto;
 
-@Mapper(componentModel = "spring")
+import java.time.Instant;
+
+@Mapper(componentModel = "spring", imports = Instant.class)
 public interface CommentDomainRequestDtoMapper {
 
     @Mapping(target = "author.id", source = "userId")
     @Mapping(target = "item.id", source = "dto.itemId")
+    @Mapping(target = "created", expression = "java(Instant.now())")
     Comment dtoToDomain(CommentRequestDto dto);
 
     CommentRequestDto domainToDto(Comment comment);

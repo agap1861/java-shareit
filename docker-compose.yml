@@ -5,10 +5,12 @@ services:
     container_name: shareit-gateway
     ports:
       - "8080:8080"
+      - "5006:5005"
     depends_on:
       - server
     environment:
       - SHAREIT_SERVER_URL=http://server:9090
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
 
   server:
     build: server
@@ -16,12 +18,15 @@ services:
     container_name: shareit-server
     ports:
       - "9090:9090"
+      - "5005:5005"
     depends_on:
       - db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/base
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=MVEaCr2lI9
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+      - TZ=Europe/Belgrade
 
   db:
     image: postgres:16.1

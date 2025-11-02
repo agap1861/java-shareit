@@ -2,6 +2,7 @@ package ru.practicum.controllers;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RequestController {
     private final ValidateRequest validateRequest;
-    private static final String SERVER = "http://localhost:9090/requests";
+    @Value("${shareit.server.url}")
+    private String serverUrl;
+    private static final String path = "/requests";
     private final RestTemplate restTemplate;
 
     @PostMapping
@@ -35,7 +38,7 @@ public class RequestController {
 
         HttpEntity<InRequest> request = new HttpEntity<>(inRequest, httpHeaders);
         ResponseEntity<OutRequest> response = restTemplate.postForEntity(
-                SERVER,
+                serverUrl + path,
                 request,
                 OutRequest.class
         );
@@ -50,7 +53,7 @@ public class RequestController {
         httpHeaders.set("X-Sharer-User-Id", String.valueOf(userId));
         HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
         ResponseEntity<List<RequestWithResponse>> response = restTemplate.exchange(
-                SERVER,
+                serverUrl + path,
                 HttpMethod.GET,
                 request,
                 new ParameterizedTypeReference<List<RequestWithResponse>>() {
@@ -63,7 +66,7 @@ public class RequestController {
     public RequestWithResponse getRequestById(@PathVariable Long requestId) throws ValidationException {
         validateRequest.validateId(requestId);
         ResponseEntity<RequestWithResponse> response = restTemplate.exchange(
-                SERVER + "/" + requestId,
+                serverUrl + path + "/" + requestId,
                 HttpMethod.GET,
                 null,
                 RequestWithResponse.class

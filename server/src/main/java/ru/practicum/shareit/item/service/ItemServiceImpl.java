@@ -127,6 +127,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Comment postComment(Comment comment) throws ValidationException, NotFoundException {
         Booking booking = bookingStorage.findOneByBooker_IdAndItemEntity_Id(comment.getAuthor().getId(), comment.getItem().getId());
+
         if (booking != null && booking.getEnd().isBefore(LocalDateTime.now())) {
             User author = userService.getUserById(comment.getAuthor().getId());
             comment.setAuthor(author);
@@ -135,6 +136,8 @@ public class ItemServiceImpl implements ItemService {
         } else {
             throw new ValidationException("user didn't booked this item");
         }
+        //
+
 
     }
 

@@ -2,6 +2,7 @@ package ru.practicum.controllers;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,10 @@ import ru.practicum.validate.ValidateUser;
 public class UserController {
     private final ValidateUser validateUser;
     private final RestTemplate restTemplate;
-    private static final String SERVER = "http://localhost:9090/users";
+
+    @Value("${shareit.server.url}")
+    private String serverUrl;
+    private static final String path = "/users";
 
 
     @PostMapping
@@ -27,7 +31,7 @@ public class UserController {
         validateUser.validateInputDataForPost(inUser);
         HttpEntity<InUser> request = new HttpEntity<>(inUser);
         ResponseEntity<OutUser> user = restTemplate
-                .postForEntity(SERVER, request, OutUser.class);
+                .postForEntity(serverUrl + path, request, OutUser.class);
         return user.getBody();
     }
 
@@ -36,7 +40,7 @@ public class UserController {
         validateUser.validateInputDataForPatch(inUser, userId);
         HttpEntity<InUser> request = new HttpEntity<>(inUser);
         ResponseEntity<OutUser> response = restTemplate.exchange(
-                SERVER + "/" + userId,
+                serverUrl + path + "/" + userId,
                 HttpMethod.PATCH,
                 request,
                 OutUser.class
@@ -49,7 +53,7 @@ public class UserController {
     public OutUser getUserById(@PathVariable Long userId) throws ValidationException {
         validateUser.validateId(userId);
         ResponseEntity<OutUser> response = restTemplate.exchange(
-                SERVER + "/" + userId,
+                serverUrl + path + "/" + userId,
                 HttpMethod.GET,
                 null,
                 OutUser.class
@@ -60,7 +64,7 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public void deleteUserById(@PathVariable Long userId) throws ValidationException {
         validateUser.validateId(userId);
-        restTemplate.delete(SERVER + "/" + userId);
+        restTemplate.delete(serverUrl + path + "/" + userId);
     }
 
 

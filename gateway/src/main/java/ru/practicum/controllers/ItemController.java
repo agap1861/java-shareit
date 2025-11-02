@@ -3,6 +3,7 @@ package ru.practicum.controllers;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,9 @@ import java.util.List;
 public class ItemController {
     private final ValidateItem validateItem;
     private final RestTemplate restTemplate;
-    private static final String SERVER = "http://localhost:9090/items";
+    @Value("${shareit.server.url}")
+    private String serverUrl;
+    private static final String path = "/items";
 
     @PostMapping
     public OutItem postItem(@RequestHeader("X-Sharer-User-Id") Long ownerId, @RequestBody InItem inItem) throws ValidationException {
@@ -34,7 +37,7 @@ public class ItemController {
         httpHeaders.set("X-Sharer-User-Id", String.valueOf(ownerId));
         HttpEntity<InItem> request = new HttpEntity<>(inItem, httpHeaders);
         ResponseEntity<OutItem> item = restTemplate
-                .postForEntity(SERVER, request, OutItem.class);
+                .postForEntity(serverUrl + path, request, OutItem.class);
         return item.getBody();
 
     }
@@ -48,7 +51,7 @@ public class ItemController {
         httpHeaders.set("X-Sharer-User-Id", String.valueOf(ownerId));
         HttpEntity<InItem> request = new HttpEntity<>(inItem, httpHeaders);
         ResponseEntity<OutItem> response = restTemplate.exchange(
-                SERVER + "/" + itemId,
+                serverUrl + path + "/" + itemId,
                 HttpMethod.PATCH,
                 request,
                 OutItem.class
@@ -64,7 +67,7 @@ public class ItemController {
         httpHeaders.set("X-Sharer-User-Id", String.valueOf(userId));
         HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
         ResponseEntity<ItemWithComment> response = restTemplate.exchange(
-                SERVER + "/" + itemId,
+                serverUrl + path + "/" + itemId,
                 HttpMethod.GET,
                 request,
                 ItemWithComment.class
@@ -79,7 +82,7 @@ public class ItemController {
         httpHeaders.set("X-Sharer-User-Id", String.valueOf(ownerId));
         HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
         ResponseEntity<List<OutItem>> response = restTemplate.exchange(
-                SERVER,
+                serverUrl + path,
                 HttpMethod.GET,
                 request,
                 new ParameterizedTypeReference<List<OutItem>>() {
@@ -92,7 +95,7 @@ public class ItemController {
     public List<OutItem> getItemBySearch(@RequestParam("text") String text) throws ValidationException {
         validateItem.validateText(text);
         ResponseEntity<List<OutItem>> response = restTemplate.exchange(
-                SERVER + "/search?text={text}",
+                serverUrl + path + "/search?text={text}",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<OutItem>>() {
@@ -109,7 +112,7 @@ public class ItemController {
         httpHeaders.set("X-Sharer-User-Id", String.valueOf(userId));
         HttpEntity<InComment> request = new HttpEntity<>(comment, httpHeaders);
         ResponseEntity<OutComment> response = restTemplate.postForEntity(
-                SERVER + "/" + itemId + "/comment",
+                serverUrl + path + "/" + itemId + "/comment",
                 request,
                 OutComment.class
         );

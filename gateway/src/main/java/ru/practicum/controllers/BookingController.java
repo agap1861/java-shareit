@@ -2,6 +2,7 @@ package ru.practicum.controllers;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +24,9 @@ import java.util.List;
 public class BookingController {
     private final ValidateBooking validateBooking;
     private final RestTemplate restTemplate;
-    private static final String SERVER = "http://localhost:9090/bookings";
+    @Value("${shareit.server.url}")
+    private String serverUrl;
+    private static final String path = "/bookings";
 
     @PostMapping
     public OutBooking postBooking(@RequestHeader("X-Sharer-User-Id") Long bookerId, @RequestBody InBooking inBooking) throws ValidationException {
@@ -33,7 +36,7 @@ public class BookingController {
         httpHeaders.set("X-Sharer-User-Id", String.valueOf(bookerId));
         HttpEntity<InBooking> request = new HttpEntity<>(inBooking, httpHeaders);
         ResponseEntity<OutBooking> response = restTemplate.postForEntity(
-                SERVER,
+                serverUrl + path,
                 request,
                 OutBooking.class
         );
@@ -48,7 +51,7 @@ public class BookingController {
         httpHeaders.set("X-Sharer-User-Id", String.valueOf(ownerId));
         HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
         ResponseEntity<OutBooking> response = restTemplate.exchange(
-                SERVER + "/" + bookingId + "?approved={approved}",
+                serverUrl + path + "/" + bookingId + "?approved={approved}",
                 HttpMethod.PATCH,
                 request,
                 OutBooking.class,
@@ -66,7 +69,7 @@ public class BookingController {
         httpHeaders.set("X-Sharer-User-Id", String.valueOf(userId));
         HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
         ResponseEntity<OutBooking> response = restTemplate.exchange(
-                SERVER + "/" + bookingId,
+                serverUrl + path + "/" + bookingId,
                 HttpMethod.GET,
                 request,
                 OutBooking.class
@@ -82,7 +85,7 @@ public class BookingController {
         httpHeaders.set("X-Sharer-User-Id", String.valueOf(bookerId));
         HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
         ResponseEntity<List<OutBooking>> response = restTemplate.exchange(
-                SERVER,
+                serverUrl + path,
                 HttpMethod.GET,
                 request,
                 new ParameterizedTypeReference<List<OutBooking>>() {

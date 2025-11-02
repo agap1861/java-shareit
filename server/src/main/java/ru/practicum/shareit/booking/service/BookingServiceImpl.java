@@ -30,7 +30,7 @@ public class BookingServiceImpl implements BookingService {
     public Booking postBooking(Booking booking) throws NotFoundException, ValidationException {
 
         validateBooking(booking);
-        Item item = itemService.findItemById(booking.getItem().getId()).get();
+        Item item = itemService.findItemById(booking.getItem().getId()).orElseThrow(() -> new NotFoundException("not found"));
         booking.setItem(item);
         return bookingStorage.save(booking);
 
@@ -64,6 +64,7 @@ public class BookingServiceImpl implements BookingService {
             booking.setStatus(StatusBooking.REJECTED);
         }
         itemService.postItem(item);
+        bookingStorage.save(booking);
         return booking;
 
 

@@ -19,15 +19,15 @@ public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "text")
+    @Column(name = "text",nullable = false)
     private String text;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "item_id",nullable = false)
     private ItemEntity item;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id",nullable = false)
     private UserEntity author;
-    @Column(name = "created")
+    @Column(name = "created",nullable = false)
     private Instant created;
 
     public CommentEntity(String text, ItemEntity item, UserEntity author) {
