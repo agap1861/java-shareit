@@ -23,7 +23,6 @@
     <modules>
         <module>server</module>
         <module>gateway</module>
-        <module>postman</module>
     </modules>
 
 	<dependencies>
