@@ -11,6 +11,8 @@ services:
     environment:
       - SHAREIT_SERVER_URL=http://server:9090
       - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    command: ["./tests/.github/workflows/wait-for-it.sh", "server:9090", "-t", "90", "--", "java", "-jar", "app.jar"]
+
 
   server:
     build: server
@@ -27,6 +29,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=shareit
       - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
       - TZ=Europe/Belgrade
+    command: [ "./tests/.github/workflows/wait-for-it.sh", "db:5432", "-t", "90", "--", "java", "-jar", "app.jar" ]
+
 
   db:
     image: postgres:16.1
