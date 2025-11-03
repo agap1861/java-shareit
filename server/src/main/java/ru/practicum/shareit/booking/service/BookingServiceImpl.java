@@ -32,6 +32,9 @@ public class BookingServiceImpl implements BookingService {
         validateBooking(booking);
         Item item = itemService.findItemById(booking.getItem().getId()).orElseThrow(() -> new NotFoundException("not found"));
         booking.setItem(item);
+        if (booking.getStatus() == null) {
+            booking.setStatus(StatusBooking.WAITING);
+        }
         return bookingStorage.save(booking);
 
     }
